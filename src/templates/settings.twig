@@ -1,0 +1,30 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * UptimeRobot plugin for Craft CMS 3.x
+ *
+ * UptimeRobot Settings.twig
+ *
+ * @author    La Haute Société
+ * @copyright Copyright (c) 2018 La Haute Société
+ * @link      https://www.lahautesociete.com
+ * @package   UptimeRobot
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("lhs\\uptimerobot\\assetbundles\\uptimerobot\\UptimeRobotAsset") %}
+
+{{ forms.textField({
+    label:          'Main API Key'|t('uptime-robot'),
+    id:             'apiKey',
+    name:           'apiKey',
+    value:          settings['apiKey'],
+    errors:         settings.getErrors('apiKey')
+}) }}
+
+
+    <a href="https://uptimerobot.com/dashboard#mySettings" target="_blank">{{ 'You will find your main API key here.'|t('uptime-robot') }}</a>
+</div>

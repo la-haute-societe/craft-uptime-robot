@@ -1,0 +1,47 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * UptimeRobot plugin for Craft CMS 3.x
+ *
+ * UptimeRobot add-monitor.twig
+ *
+ * @author    La Haute Société
+ * @copyright Copyright (c) 2018 La Haute Société
+ * @link      https://www.lahautesociete.com
+ * @package   UptimeRobot
+ * @since     1.0.0
+ */
+#}
+
+{% extends "uptime-robot/_layouts/main.twig" %}
+{% set fullPageForm = true %}
+
+{%  set crumbs = [
+    {
+        label: "Uptime Robot",
+        url: cpUrl('uptime-robot')
+    },
+    {
+        label: "Add monitor"|t('uptime-robot'),
+        url: cpUrl("uptime-robot/add-monitor/" ~ currentSite.id)
+    }
+] %}
+
+{% block contextMenu %}
+    {% if showSiteMenu %}
+        {% include "_elements/sitemenu" with {
+            urlFormat: "uptime-robot/add-monitor/{handle}"
+        } %}
+    {% endif %}
+{% endblock %}
+
+{# Content that should appear in the page header#}
+{% block actionButton %}
+    <input type="submit" class="btn submit" value="{{ 'Start monitor'|t('uptime-robot') }}">
+{% endblock %}
+
+{# The content of the CP Section#}
+{% set content %}
+    {% include 'uptime-robot/_includes/_form' %}
+{% endset %}
+

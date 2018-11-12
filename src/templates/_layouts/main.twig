@@ -1,0 +1,25 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * UptimeRobot plugin for Craft CMS 3.x
+ *
+ * UptimeRobot index.twig
+ *
+ * @author    La Haute Société
+ * @copyright Copyright (c) 2018 La Haute Société
+ * @link      https://www.lahautesociete.com
+ * @package   UptimeRobot
+ * @since     1.0.0
+ */
+#}
+
+{% extends "_layouts/cp" %}
+
+{% do view.registerAssetBundle("lhs\\uptimerobot\\assetbundles\\uptimerobot\\UptimeRobotAsset") %}
+{% do view.registerAssetBundle("lhs\\uptimerobot\\assetbundles\\uptimerobotcpsection\\UptimeRobotCPSectionAsset") %}
+
+{# The title of this CP section #}
+{% set title = "Uptime Robot" %}
+
+{# Content menu#}
+{% set showSiteMenu = (craft.app.getIsMultiSite() ? (showSiteMenu ?? 'auto') : false) %}

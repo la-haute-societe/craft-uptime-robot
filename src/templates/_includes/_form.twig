@@ -1,0 +1,35 @@
+{% import "_includes/forms" as forms %}
+
+{% if craft.app.getIsMultiSite() %}
+    {{ forms.hidden({
+        name: model.formName() ~ '[siteId]',
+        id: 'siteId',
+        value: model.siteId
+    }) }}
+{% endif %}
+
+{{ forms.elementSelectField({
+    first: true,
+    label: 'Entry to monitor'|t('uptime-robot'),
+    id: 'entries',
+    name: model.formName() ~ '[entries]',
+    elementType: craft.uptimeRobot.entryType,
+    sources: '*',
+    limit: 1,
+    selectionLabel: 'Entry'|t('uptime-robot'),
+    elements: [model.entry],
+    required: true,
+    errors: model.getErrors('entries')
+}) }}
+
+{{ forms.elementSelectField({
+    label: 'Contacts to receive monitor alerts'|t('uptime-robot'),
+    id: 'alertContacts',
+    name: model.formName() ~ '[alertContacts]',
+    elementType: craft.uptimeRobot.userType,
+    sources: '*',
+    selectionLabel: 'Users'|t('uptime-robot'),
+    elements: model.alertContacts,
+    required: true,
+    errors: model.getErrors('alertContacts')
+}) }}

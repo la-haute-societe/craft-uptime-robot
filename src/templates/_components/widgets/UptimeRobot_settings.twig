@@ -1,0 +1,26 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * UptimeRobot plugin for Craft CMS
+ *
+ * UptimeRobot Widget Settings
+ *
+ * @author    La Haute Société
+ * @copyright Copyright (c) 2018 La Haute Société
+ * @link      https://www.lahautesociete.com
+ * @package   UptimeRobot
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("lhs\\uptimerobot\\assetbundles\\uptimerobot\\UptimeRobotAsset") %}
+
+{{ forms.textField({
+    label: 'Message',
+    instructions: 'Enter a message here.',
+    id: 'message',
+    name: 'message',
+    value: widget['message']})
+}}

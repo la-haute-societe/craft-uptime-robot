@@ -1,0 +1,46 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Uptime Robot plugin for Craft CMS 3.x
+ *
+ * Uptime Robot index.twig
+ *
+ * @author    La Haute Société
+ * @copyright Copyright (c) 2018 La Haute Société
+ * @link      https://www.lahautesociete.com
+ * @package   UptimeRobot
+ * @since     1.0.0
+ */
+#}
+
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("lhs\\uptimerobot\\assetbundles\\uptimerobot\\UptimeRobotAsset") %}
+{% do view.registerAssetBundle("lhs\\uptimerobot\\assetbundles\\uptimerobotcpsection\\UptimeRobotCPSectionAsset") %}
+
+{# Link for the ? icon at the bottom of the page #}
+{% set docsUrl = "https://github.com/la-haute-societe/uptime-robot/blob/master/README.md" %}
+
+{# The title of this CP section #}
+{% set title = "Uptime Robot" %}
+
+{# The URL to this plugin's base CP section #}
+{% set pluginCpUrl = url('uptime-robot') %}
+
+{# Get a URL to an image in our AssetBundle #}
+{% set iconUrl = view.getAssetManager().getPublishedUrl('@lhs/uptimerobot/assetbundles/uptimerobotcpsection/dist', true) ~ '/img/UptimeRobot-icon.svg' %}
+
+{# Content that should appear in the page header#}
+{% set extraPageHeaderHtml %}
+    <div class="buttons">
+        <a href="{{ pluginCpUrl }}" class="btn submit add icon">{{ "Click Me!"|t('uptime-robot') }}</a>
+    </div>
+{% endset %}
+
+{# The content of the CP Section#}
+{% set content %}
+    <h2>{{ "UptimeRobot CP Section body goes here"|t('uptime-robot') }}</h2>
+    <img src="{{ iconUrl }}" height="64" width="64" />
+    <p class="textline"></p>
+{% endset %}

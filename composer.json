@@ -1,0 +1,44 @@
+{
+    "name": "la-haute-societe/craft-uptime-robot",
+    "description": "Monitor your Craft CMS sites with Uptime Robot.",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "uptime-robot"
+    ],
+    "support": {
+        "docs": "https://github.com/la-haute-societe/craft-uptime-robot/blob/master/README.md",
+        "issues": "https://github.com/la-haute-societe/craft-uptime-robot/issues"
+    },
+    "license": "Craft",
+    "authors": [
+        {
+            "name": "La Haute Société",
+            "homepage": "https://www.lahautesociete.com"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1",
+        "yiisoft/yii2-httpclient": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "lhs\\uptimerobot\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Uptime Robot",
+        "handle": "uptime-robot",
+        "hasCpSettings": true,
+        "hasCpSection": true,
+        "changelogUrl": "https://raw.githubusercontent.com/la-haute-societe/craft-uptime-robot/master/CHANGELOG.md",
+        "components": {
+            "uptimeRobot": "lhs\\uptimerobot\\services\\UptimeRobot"
+        },
+        "class": "lhs\\uptimerobot\\UptimeRobot"
+    }
+}
