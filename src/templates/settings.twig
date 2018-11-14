@@ -13,6 +13,8 @@
  */
 #}
 
+{% requirePermission "uptime-robot:plugin-settings" %}
+
 {% import "_includes/forms" as forms %}
 
 {% do view.registerAssetBundle("lhs\\uptimerobot\\assetbundles\\uptimerobot\\UptimeRobotAsset") %}

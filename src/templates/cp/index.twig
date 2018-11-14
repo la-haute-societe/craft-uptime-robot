@@ -18,11 +18,14 @@
 
 {# Content that should appear in the page header#}
 {% block actionButton %}
-    <a href="{{ url('uptime-robot/add-monitor') }}" class="btn submit add icon">{{ 'Add new monitor'|t('uptime-robot') }}</a>
+    {% if currentUser.can('uptime-robot:add-monitor') and showAddMonitor %}
+        <a href="{{ url('uptime-robot/add-monitor') }}" class="btn submit add icon">{{ 'Add new monitor'|t('uptime-robot') }}</a>
+    {% endif %}
 {% endblock %}
 
 {# The content of the CP Section#}
 {% set content %}
+    <h4>{{ '{monitorsLeft,plural,=0{No remaining monitor available} =1{One remaining monitor} other{# remaining monitors}}.'|t('uptime-robot', { monitorsLeft: monitorsLeft }) }}</h4>
     {% if monitors|length %}
         <div class="tableview">
             <table class="data fullwidth collapsible">
@@ -30,9 +33,9 @@
                 <thead>
 
                 <th scope="col">{{ 'Name'|t('uptime-robot') }}</th>
-                <th scope="col">{{ 'Status'|t('uptime-robot') }}</th>
                 <th scope="col">{{ 'Type'|t('uptime-robot') }}</th>
                 <th scope="col">{{ 'URL'|t('uptime-robot') }}</th>
+                <th scope="col">{{ 'Status'|t('uptime-robot') }}</th>
                 <th scope="col">{{ 'Uptime'|t('uptime-robot') }}</th>
                 <td scope="col" class="thin" title="{{ 'Edit'|t }}"></td>
 
@@ -45,11 +48,17 @@
                     <tr>
 
                         <th>{{ monitor.name }}</th>
-                        <td style="white-space: nowrap"><span class="{{ monitor.statusClass }}"></span>{{ monitor.status }}</td>
                         <td>{{ monitor.type }}</td>
                         <td>{{ monitor.url }}</td>
+                        <td style="white-space: nowrap"><span class="{{ monitor.statusClass }}"></span>{{ monitor.status }}</td>
                         <td>{{ monitor.uptime }}</td>
-                        <td class="thin"><a href="{{ url('uptime-robot/edit-monitor/' ~ monitor.id) }}" data-icon="edit"></a></td>
+                        <td class="thin">
+                            {% if currentUser.can('uptime-robot:edit-monitor:' ~ monitor.siteId) %}
+                                <a href="{{ url('uptime-robot/edit-monitor/' ~ monitor.id) }}" data-icon="edit"></a>
+                            {% else %}
+                                &nbsp;
+                            {% endif %}
+                        </td>
 
                     </tr>
 

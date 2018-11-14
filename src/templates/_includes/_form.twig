@@ -15,6 +15,9 @@
     name: model.formName() ~ '[entries]',
     elementType: craft.uptimeRobot.entryType,
     sources: '*',
+    criteria: {
+        status: 'live'
+    },
     limit: 1,
     selectionLabel: 'Entry'|t('uptime-robot'),
     elements: [model.entry],
