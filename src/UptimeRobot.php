@@ -15,9 +15,11 @@ use craft\base\Plugin;
 use craft\console\Application as ConsoleApplication;
 use craft\elements\Entry;
 use craft\events\PluginEvent;
+use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterUserPermissionsEvent;
 use craft\helpers\UrlHelper;
+use craft\services\Dashboard;
 use craft\services\Plugins;
 use craft\services\UserPermissions;
 use craft\web\Application;
@@ -27,6 +29,7 @@ use lhs\uptimerobot\models\Settings;
 use lhs\uptimerobot\records\UptimeRobotMonitor;
 use lhs\uptimerobot\services\UptimeRobotService as UptimeRobotService;
 use lhs\uptimerobot\variables\UptimeRobotVariable;
+use lhs\uptimerobot\widgets\UptimeRobotWidget;
 use yii\base\Event;
 use yii\httpclient\debug\HttpClientPanel;
 
@@ -129,14 +132,17 @@ class UptimeRobot extends Plugin
             }
         );
 
-        // TODO Register our widgets
-        /*Event::on(
+        // Register our widgets
+        Event::on(
             Dashboard::class,
             Dashboard::EVENT_REGISTER_WIDGET_TYPES,
             function (RegisterComponentTypesEvent $event) {
-                $event->types[] = UptimeRobotWidget::class;
+                if (Craft::$app->getUser()->checkPermission('uptime-robot:view-monitors')) {
+                    $event->types[] = UptimeRobotWidget::class;
+                }
             }
-        );*/
+        );
+
 
         // Update related entry monitor if any
         Event::on(
@@ -146,7 +152,7 @@ class UptimeRobot extends Plugin
                 /** @var Entry $entry */
                 $entry = $event->sender;
                 $model = UptimeRobotMonitor::findOne(['entryId' => $entry->id, 'siteId' => $entry->siteId]);
-                if($model) {
+                if ($model) {
                     $model->save(); // Update monitor via API
                 }
             }
@@ -160,7 +166,7 @@ class UptimeRobot extends Plugin
                 /** @var Entry $entry */
                 $entry = $event->sender;
                 $model = UptimeRobotMonitor::findOne(['entryId' => $entry->id, 'siteId' => $entry->siteId]);
-                if($model) {
+                if ($model) {
                     $model->delete(); // Delete monitor via API
                 }
             }
@@ -187,6 +193,7 @@ class UptimeRobot extends Plugin
             Plugin::EVENT_AFTER_SAVE_SETTINGS,
             function (Event $event) {
                 if ($event->sender === $this) {
+                    $this->service->flushCache();
                     Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('uptime-robot'))->send();
                 }
             }

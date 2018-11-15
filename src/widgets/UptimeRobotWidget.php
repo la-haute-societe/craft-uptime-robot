@@ -10,11 +10,12 @@
 
 namespace lhs\uptimerobot\widgets;
 
-use lhs\uptimerobot\UptimeRobot;
-use lhs\uptimerobot\assetbundles\uptimerobotwidget\UptimeRobotWidgetAsset;
-
 use Craft;
 use craft\base\Widget;
+use Exception;
+use lhs\uptimerobot\assetbundles\uptimerobotwidget\UptimeRobotWidgetAsset;
+use lhs\uptimerobot\records\UptimeRobotMonitor;
+use lhs\uptimerobot\UptimeRobot;
 
 /**
  * UptimeRobot Widget
@@ -33,11 +34,8 @@ class UptimeRobotWidget extends Widget
 
     // Public Properties
     // =========================================================================
+    //public $message;
 
-    /**
-     * @var string The message to display
-     */
-    public $message = 'Hello, world.';
 
     // Static Methods
     // =========================================================================
@@ -49,7 +47,7 @@ class UptimeRobotWidget extends Widget
      */
     public static function displayName(): string
     {
-        return Craft::t('uptime-robot', 'UptimeRobot');
+        return Craft::t('uptime-robot', 'Uptime Robot');
     }
 
     /**
@@ -87,15 +85,7 @@ class UptimeRobotWidget extends Widget
      */
     public function rules()
     {
-        $rules = parent::rules();
-        $rules = array_merge(
-            $rules,
-            [
-                ['message', 'string'],
-                ['message', 'default', 'value' => 'Hello, world.'],
-            ]
-        );
-        return $rules;
+        return parent::rules();
     }
 
     /**
@@ -192,12 +182,13 @@ class UptimeRobotWidget extends Widget
      */
     public function getSettingsHtml()
     {
-        return Craft::$app->getView()->renderTemplate(
-            'uptime-robot/_components/widgets/UptimeRobot_settings',
-            [
-                'widget' => $this
-            ]
-        );
+        //        return Craft::$app->getView()->renderTemplate(
+        //            'uptime-robot/_components/widgets/UptimeRobot_settings',
+        //            [
+        //                'widget' => $this
+        //            ]
+        //        );
+        return null;
     }
 
     /**
@@ -206,16 +197,37 @@ class UptimeRobotWidget extends Widget
      * @return string|false The widget’s body HTML, or `false` if the widget
      *                      should not be visible. (If you don’t want the widget
      *                      to be selectable in the first place, use {@link isSelectable()}.)
+     * @throws \Twig_Error_Loader
+     * @throws \lhs\uptimerobot\exceptions\ApiException
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\httpclient\Exception
      */
     public function getBodyHtml()
     {
         Craft::$app->getView()->registerAssetBundle(UptimeRobotWidgetAsset::class);
 
-        return Craft::$app->getView()->renderTemplate(
-            'uptime-robot/_components/widgets/UptimeRobot_body',
-            [
-                'message' => $this->message
-            ]
-        );
+        if (empty(UptimeRobot::$plugin->settings->apiKey)) {
+            return Craft::$app->getView()->renderTemplate('uptime-robot/_components/widgets/UptimeRobot_missingApiKey');
+        }
+
+        try {
+            $monitorsQuery = UptimeRobotMonitor::find();
+            if (Craft::$app->getIsMultiSite() === true) {
+                $allowedSitesIds = [];
+                foreach (Craft::$app->getSites()->getAllSites() as $site) {
+                    if (Craft::$app->user->checkPermission('uptime-robot:view-monitors:' . $site->id)) {
+                        $allowedSitesIds[] = $site->id;
+                    }
+                }
+                $monitorsQuery->where(['siteId' => $allowedSitesIds]);
+            }
+            $variables['monitors'] = $monitorsQuery->all();
+        } catch (Exception $e) {
+            return Craft::$app->getView()->renderTemplate('uptime-robot/_components/widgets/UptimeRobot_error', ['message' => $e->getMessage()]);
+        }
+
+
+        return Craft::$app->getView()->renderTemplate('uptime-robot/_components/widgets/UptimeRobot_body', $variables);
     }
 }

@@ -67,8 +67,9 @@ class CpController extends Controller
     /**
      * Handle a request going to our plugin's index action URL
      *
-     * @param string $handle
      * @return mixed
+     * @throws \lhs\uptimerobot\exceptions\ApiException
+     * @throws \yii\httpclient\Exception
      * @throws \yii\web\ForbiddenHttpException
      */
     public function actionIndex()

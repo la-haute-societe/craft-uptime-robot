@@ -13,8 +13,42 @@
  */
 #}
 
-{% set iconUrl = view.getAssetManager().getPublishedUrl('@lhs/uptimerobot/assetbundles/uptimerobotwidget/dist', true) ~ '/img/UptimeRobot-icon.svg' %}
+{% if monitors|length %}
+    <div class="tableview">
+        <table class="data fullwidth collapsible">
 
-<img src="{{ iconUrl }}" height="64" width="64" />
+            <thead>
 
-<p>{{ message }}</p>
+            <th scope="col">{{ 'Name'|t('uptime-robot') }}</th>
+            <th scope="col">{{ 'Status'|t('uptime-robot') }}</th>
+            <th scope="col">{{ 'Uptime'|t('uptime-robot') }}</th>
+
+            </thead>
+
+            <tbody>
+
+            {% for monitor in monitors %}
+
+                <tr>
+
+                    <th style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ monitor.name }}</th>
+                    <td style="white-space: nowrap"><span class="{{ monitor.statusClass }}"></span>{{ monitor.status }}</td>
+                    <td>{{ monitor.uptime }}</td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+    </div>
+{% else %}
+
+    <h3>{{ 'No monitors found'|t('uptime-robot') }}</h3>
+
+    <p>{{ 'Click the \'Add new monitor\' button to create one.'|t('uptime-robot') }}</p>
+
+{% endif %}
+
+

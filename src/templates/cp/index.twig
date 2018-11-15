@@ -33,10 +33,10 @@
                 <thead>
 
                 <th scope="col">{{ 'Name'|t('uptime-robot') }}</th>
-                <th scope="col">{{ 'Type'|t('uptime-robot') }}</th>
-                <th scope="col">{{ 'URL'|t('uptime-robot') }}</th>
                 <th scope="col">{{ 'Status'|t('uptime-robot') }}</th>
                 <th scope="col">{{ 'Uptime'|t('uptime-robot') }}</th>
+                <th scope="col">{{ 'Type'|t('uptime-robot') }}</th>
+                <th scope="col">{{ 'URL'|t('uptime-robot') }}</th>
                 <td scope="col" class="thin" title="{{ 'Edit'|t }}"></td>
 
                 </thead>
@@ -48,10 +48,10 @@
                     <tr>
 
                         <th>{{ monitor.name }}</th>
-                        <td>{{ monitor.type }}</td>
-                        <td>{{ monitor.url }}</td>
                         <td style="white-space: nowrap"><span class="{{ monitor.statusClass }}"></span>{{ monitor.status }}</td>
                         <td>{{ monitor.uptime }}</td>
+                        <td>{{ monitor.type }}</td>
+                        <td>{{ monitor.url }}</td>
                         <td class="thin">
                             {% if currentUser.can('uptime-robot:edit-monitor:' ~ monitor.siteId) %}
                                 <a href="{{ url('uptime-robot/edit-monitor/' ~ monitor.id) }}" data-icon="edit"></a>

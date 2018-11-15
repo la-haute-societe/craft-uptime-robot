@@ -232,10 +232,20 @@ class UptimeRobotService extends Component
     }
 
     /**
+     * Flush account, monitors and alert contacts caches
+     */
+    public function flushCache()
+    {
+        $this->cache->delete([__CLASS__, 'getAccountDetails']);
+        TagDependency::invalidate($this->cache, __CLASS__ . '_monitors');
+        TagDependency::invalidate($this->cache, __CLASS__ . '_alertcontacts');
+    }
+
+    /**
      * Get the default set of parameters to be sent to the Uptime Robot API (apiKey, format)
      * @return array
      */
-    public function getDefaultParams(): array
+    protected function getDefaultParams(): array
     {
         return [
             'api_key' => $this->apiKey,
@@ -243,6 +253,7 @@ class UptimeRobotService extends Component
             'time'    => time() // Cache buster
         ];
     }
+
 
     /**
      * Obfuscate sensible API parameters for logging purposes
