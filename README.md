@@ -41,7 +41,7 @@ You can do so by visiting their [signup page](https://uptimerobot.com/signUp).
 
 Once logged into your Uptime Robot account, you will be able to get your API key in the "My Settings" menu.
 
-In the lower right section of the page, you can click the "Show/hide it" link to reveal the API key, generate it and copy it.
+In the lower right section of the page, you can click the "Show/hide it" link to reveal the API key, generate and copy it.
 
 ![Logo](resources/img/uptime-robot-api-key.png)
 
@@ -71,7 +71,7 @@ You're done!
 ![Add a monitor screen](resources/img/uptime-robot-add-monitor.png)
 > **Notes:**
 > 
-> * When adding a user for the first time, a corresponding account will be created on the Uptime Robot service. The user will then receive an email in order to activate the account in order to receive the notifications.
+> * When adding a user for the first time, a corresponding account will be created on the Uptime Robot service. The user will then receive an email to activate his account in order to receive the notifications.
 > * If your Craft environement support multiple sites, you can select the desired one in the according drop down. 
 > * There will be a slight delay between the monitor creation and its effective start during which it will appear as "Not checked yet". That is a normal behavior.
 
@@ -80,15 +80,17 @@ You're done!
 Every monitored entry will show up in the main Uptime Robot administration panel.
 From there, you will get the monitors status and uptime informations.
 
-To edit a monitor configuration, click on the according pen icon.
+To edit a monitor configuration, click the according pen icon.
 
 ![View monitors screen](resources/img/uptime-robot-view-monitors.png)
-> **Note:**
-> From that screen, you will see how many remaining monitors are available from your Uptime Robot account.
+> **Notes:**
+> 
+> * From that screen, you will see how many remaining monitors are available from your Uptime Robot account.
+> * The monitors informations are refreshed every 5 minutes.
 
 ### Edit a monitor
 
-The editon screen allows you to change the entry and the alert contacts users.
+The edition screen allows you to change the entry and the alert contacts users.
 
 You can also remove the monitor by using the "Delete" action from the upper right menu button.
 
@@ -113,7 +115,7 @@ If the Craft environement support multiple sites, you will be able to set the pe
 
 ### Uptime Robot Widget
 
-A Craft widget is available which will list all monitors with there status and uptime informations. Simply add the widget from the dashboard screen by clicking the "New widget" button and select the "Uptime Robot" widget.
+You can use the Uptime Robot widget to list monitors with there status and uptime informations. Simply add the widget from the dashboard screen by clicking the "New widget" button and select the "Uptime Robot" widget.
 
 ## Uptime Robot Roadmap
 
