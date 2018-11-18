@@ -23,10 +23,12 @@ class UptimeRobotMonitorQuery extends ActiveQuery
     {
         $this->select = null;
         $records = parent::all($db);
-        $monitors = UptimeRobot::$plugin->service->getMonitors(['alert_contacts' => true, 'all_time_uptime_ratio' => true, 'monitors' => implode('-', ArrayHelper::getColumn($records, 'uptimeRobotMonitorId'))]);
-        foreach ($records as $record) {
-            $this->_loadMonitorData($monitors, $record);
-            $this->_findAlertContacts($record);
+        if (!empty($records)) {
+            $monitors = UptimeRobot::$plugin->service->getMonitors(['alert_contacts' => true, 'all_time_uptime_ratio' => true, 'monitors' => implode('-', ArrayHelper::getColumn($records, 'uptimeRobotMonitorId'))]);
+            foreach ($records as $record) {
+                $this->_loadMonitorData($monitors, $record);
+                $this->_findAlertContacts($record);
+            }
         }
         return $records;
     }
@@ -35,9 +37,11 @@ class UptimeRobotMonitorQuery extends ActiveQuery
     {
         $this->select = null;
         $record = parent::one($db);
-        $monitors = UptimeRobot::$plugin->service->getMonitors(['alert_contacts' => true, 'all_time_uptime_ratio' => true, 'monitors' => $record->uptimeRobotMonitorId]);
-        $this->_loadMonitorData($monitors, $record);
-        $this->_findAlertContacts($record);
+        if ($record !== null) {
+            $monitors = UptimeRobot::$plugin->service->getMonitors(['alert_contacts' => true, 'all_time_uptime_ratio' => true, 'monitors' => $record->uptimeRobotMonitorId]);
+            $this->_loadMonitorData($monitors, $record);
+            $this->_findAlertContacts($record);
+        }
         return $record;
     }
 
