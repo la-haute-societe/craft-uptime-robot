@@ -17,8 +17,8 @@ Just install the plugin from the [Craft Plugin Store][craft-plugin-store].
 
 ### Using Composer
 
-  - Install with Composer from your project directory: `composer require la-haute-societe/craft-restrict-asset-delete`
-  - In the Craft Control Panel, go to Settings → Plugins and click the **Install** button for Restrict Asset Delete plugin.
+  - Install with Composer from your project directory: `composer require la-haute-societe/craft-uptime-robot`
+  - In the Craft Control Panel, go to Settings → Plugins and click the **Install** button for Uptime Robot plugin.
 
 ## Uptime Robot Overview
 
