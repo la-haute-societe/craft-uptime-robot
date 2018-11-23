@@ -107,120 +107,125 @@ class UptimeRobot extends Plugin
             $this->controllerNamespace = 'lhs\uptimerobot\console\controllers';
         }
 
-        // Register our CP routes
-        Event::on(
-            UrlManager::class,
-            UrlManager::EVENT_REGISTER_CP_URL_RULES,
-            function (RegisterUrlRulesEvent $event) {
-                Craft::debug(
-                    'UrlManager::EVENT_REGISTER_SITE_URL_RULES',
-                    __METHOD__
-                );
-                $event->rules['uptime-robot/add-monitor/<handle>'] = ['route' => $this->handle . '/cp/add-monitor'];
-                $event->rules['uptime-robot/add-monitor'] = ['route' => $this->handle . '/cp/add-monitor'];
-                $event->rules['uptime-robot/edit-monitor/<id:\d+>'] = ['route' => $this->handle . '/cp/edit-monitor'];
-                $event->rules['uptime-robot/remove-monitor/<id:\d+>'] = ['route' => $this->handle . '/cp/remove-monitor'];
-                $event->rules['uptime-robot'] = ['route' => $this->handle . '/cp'];
-            }
-        );
-
-        Event::on(
-            UserPermissions::class,
-            UserPermissions::EVENT_REGISTER_PERMISSIONS,
-            function (RegisterUserPermissionsEvent $event) {
-                $event->permissions['Uptime Robot'] = $this->getPluginPermissions();
-            }
-        );
-
-        // Register our widgets
-        Event::on(
-            Dashboard::class,
-            Dashboard::EVENT_REGISTER_WIDGET_TYPES,
-            function (RegisterComponentTypesEvent $event) {
-                if (Craft::$app->getUser()->checkPermission('uptime-robot:view-monitors')) {
-                    $event->types[] = UptimeRobotWidget::class;
-                }
-            }
-        );
-
-
-        // Update related entry monitor if any
-        Event::on(
-            Entry::class,
-            Entry::EVENT_AFTER_SAVE,
-            function (Event $event) {
-                /** @var Entry $entry */
-                $entry = $event->sender;
-                $model = UptimeRobotMonitor::findOne(['entryId' => $entry->id, 'siteId' => $entry->siteId]);
-                if ($model) {
-                    $model->save(); // Update monitor via API
-                }
-            }
-        );
-
-        // Delete related entry monitor if any
-        Event::on(
-            Entry::class,
-            Entry::EVENT_AFTER_DELETE,
-            function (Event $event) {
-                /** @var Entry $entry */
-                $entry = $event->sender;
-                $model = UptimeRobotMonitor::findOne(['entryId' => $entry->id, 'siteId' => $entry->siteId]);
-                if ($model) {
-                    $model->delete(); // Delete monitor via API
-                }
-            }
-        );
-
-        // TODO: Add interval setting support
-        // TODO: Add Keyword monitor type support
-        // TODO: Add HTTP Authentication support
-
-        // Register our variables
-        Event::on(
-            CraftVariable::class,
-            CraftVariable::EVENT_INIT,
-            function (Event $event) {
-                /** @var CraftVariable $variable */
-                $variable = $event->sender;
-                $variable->set('uptimeRobot', UptimeRobotVariable::class);
-            }
-        );
-
-        // Redirect user to main CP panel after settings been saved
-        Event::on(
-            Plugin::class,
-            Plugin::EVENT_AFTER_SAVE_SETTINGS,
-            function (Event $event) {
-                if ($event->sender === $this) {
-                    $this->service->flushCache();
-                    Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('uptime-robot'))->send();
-                }
-            }
-        );
-
-        // Do something after we're installed
-        Event::on(
-            Plugins::class,
-            Plugins::EVENT_AFTER_INSTALL_PLUGIN,
-            function (PluginEvent $event) {
-                if ($event->plugin === $this) {
-                    Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('settings/plugins/uptime-robot'))->send();
-                }
-            }
-        );
-
-        if (YII_DEBUG) {
-            // Add the HttpClient Panel to the Yii debug bar
+        if (Craft::$app->getRequest()->getIsCpRequest()) {
+            // Register our CP routes
             Event::on(
-                Application::class,
-                Application::EVENT_BEFORE_REQUEST,
-                function () {
-                    /** @var \yii\debug\Module $debugModule */
-                    $debugModule = Craft::$app->getModule('debug');
-                    $debugModule->panels['httpclient'] = new HttpClientPanel(['module' => $debugModule]);
+                UrlManager::class,
+                UrlManager::EVENT_REGISTER_CP_URL_RULES,
+                function (RegisterUrlRulesEvent $event) {
+                    Craft::debug(
+                        'UrlManager::EVENT_REGISTER_SITE_URL_RULES',
+                        __METHOD__
+                    );
+                    $event->rules['uptime-robot/add-monitor/<handle>'] = ['route' => $this->handle . '/cp/add-monitor'];
+                    $event->rules['uptime-robot/add-monitor'] = ['route' => $this->handle . '/cp/add-monitor'];
+                    $event->rules['uptime-robot/edit-monitor/<id:\d+>'] = ['route' => $this->handle . '/cp/edit-monitor'];
+                    $event->rules['uptime-robot/remove-monitor/<id:\d+>'] = ['route' => $this->handle . '/cp/remove-monitor'];
+                    $event->rules['uptime-robot'] = ['route' => $this->handle . '/cp'];
                 }
             );
+
+            // Register plugin permissions
+            Event::on(
+                UserPermissions::class,
+                UserPermissions::EVENT_REGISTER_PERMISSIONS,
+                function (RegisterUserPermissionsEvent $event) {
+                    $event->permissions['Uptime Robot'] = $this->getPluginPermissions();
+                }
+            );
+
+
+            // Register our widgets
+            Event::on(
+                Dashboard::class,
+                Dashboard::EVENT_REGISTER_WIDGET_TYPES,
+                function (RegisterComponentTypesEvent $event) {
+                    if (Craft::$app->getUser()->checkPermission('uptime-robot:view-monitors')) {
+                        $event->types[] = UptimeRobotWidget::class;
+                    }
+                }
+            );
+
+
+            // Update related entry monitor if any
+            Event::on(
+                Entry::class,
+                Entry::EVENT_AFTER_SAVE,
+                function (Event $event) {
+                    /** @var Entry $entry */
+                    $entry = $event->sender;
+                    $model = UptimeRobotMonitor::findOne(['entryId' => $entry->id, 'siteId' => $entry->siteId]);
+                    if ($model) {
+                        $model->save(); // Update monitor via API
+                    }
+                }
+            );
+
+
+            // Delete related entry monitor if any
+            Event::on(
+                Entry::class,
+                Entry::EVENT_AFTER_DELETE,
+                function (Event $event) {
+                    /** @var Entry $entry */
+                    $entry = $event->sender;
+                    $model = UptimeRobotMonitor::findOne(['entryId' => $entry->id, 'siteId' => $entry->siteId]);
+                    if ($model) {
+                        $model->delete(); // Delete monitor via API
+                    }
+                }
+            );
+
+            // TODO: Add interval setting support
+            // TODO: Add Keyword monitor type support
+            // TODO: Add HTTP Authentication support
+
+            // Register our variables
+            Event::on(
+                CraftVariable::class,
+                CraftVariable::EVENT_INIT,
+                function (Event $event) {
+                    /** @var CraftVariable $variable */
+                    $variable = $event->sender;
+                    $variable->set('uptimeRobot', UptimeRobotVariable::class);
+                }
+            );
+
+            // Redirect user to main CP panel after settings been saved
+            Event::on(
+                Plugin::class,
+                Plugin::EVENT_AFTER_SAVE_SETTINGS,
+                function (Event $event) {
+                    if ($event->sender === $this) {
+                        $this->service->flushCache();
+                        Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('uptime-robot'))->send();
+                    }
+                }
+            );
+
+            // Do something after we're installed
+            Event::on(
+                Plugins::class,
+                Plugins::EVENT_AFTER_INSTALL_PLUGIN,
+                function (PluginEvent $event) {
+                    if ($event->plugin === $this) {
+                        Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('settings/plugins/uptime-robot'))->send();
+                    }
+                }
+            );
+
+            if (YII_DEBUG) {
+                // Add the HttpClient Panel to the Yii debug bar
+                Event::on(
+                    Application::class,
+                    Application::EVENT_BEFORE_REQUEST,
+                    function () {
+                        /** @var \yii\debug\Module $debugModule */
+                        $debugModule = Craft::$app->getModule('debug');
+                        $debugModule->panels['httpclient'] = new HttpClientPanel(['module' => $debugModule]);
+                    }
+                );
+            }
         }
 
         /**
