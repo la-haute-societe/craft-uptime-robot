@@ -100,7 +100,7 @@ class UptimeRobotService extends Component
         $params = ArrayHelper::merge($this->getDefaultParams(), $params);
         Craft::debug('Calling Uptime Robot API ' . $method . ' method with params ' . VarDumper::dumpAsString($this->_logSafeParams($params)), __METHOD__);
         $response = $this->getClient()->post('/' . $method, $params)->setOptions([
-            'timeout' => 5, // set timeout to 5 seconds for the case server is not responding
+            'timeout' => 10, // set timeout to 5 seconds for the case server is not responding
         ])->send();
         $data = $response->getData();
         if (!$response->getIsOk()) {

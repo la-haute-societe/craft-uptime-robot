@@ -90,7 +90,7 @@ class UptimeRobotMonitor extends ActiveRecord
         $users = $this->getAlertContacts();
         foreach ($users as $user) {
             $contact = new Contact([
-                'friendly_name' => $user->fullName,
+                'friendly_name' => $user->fullName ?? 'Craft user',
                 'value'         => $user->email,
                 'type'          => Contact::TYPE_EMAIL
             ]);
