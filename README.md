@@ -5,20 +5,25 @@
 
 Monitor your Craft CMS sites with [Uptime Robot][uptime-robot-site].
 
+
 ## Requirements
 
 This plugin requires Craft CMS 3.0.0 or later.
 
+
 ## Installation
+
 
 ### The easy way
 
 Just install the plugin from the [Craft Plugin Store][craft-plugin-store].
 
+
 ### Using Composer
 
   - Install with Composer from your project directory: `composer require la-haute-societe/craft-uptime-robot`
   - In the Craft Control Panel, go to Settings → Plugins and click the **Install** button for Uptime Robot plugin.
+
 
 ## Uptime Robot Overview
 
@@ -30,12 +35,15 @@ You can a monitor for any entry and site you wish.
 
 You can also select which user will receive email alerts if the site goes down.
 
+
 ## Configuring Uptime Robot
+
 
 ### Uptime Robot account
 To use this plugin, you will have to open an Uptime Monitor account first.
 
 You can do so by visiting their [signup page](https://uptimerobot.com/signUp).
+
 
 ### Setup the API Key
 
@@ -51,7 +59,9 @@ Copy the API key within the Uptime Robot settings and validate to check that the
 > **Note:**
 > Once you will start adding monitors, it's not recommended to update the API key with a different account, otherwise your existing monitors informations will become unavailable from the Craft admin panel.
 
+
 ## Using Uptime Robot
+
 
 ### Add a monitor
 
@@ -75,6 +85,7 @@ You're done!
 > * If your Craft environement support multiple sites, you can select the desired one in the according drop down. 
 > * There will be a slight delay between the monitor creation and its effective start during which it will appear as "Not checked yet". That is a normal behavior.
 
+
 ### View monitors
 
 Every monitored entry will show up in the main Uptime Robot administration panel.
@@ -88,6 +99,14 @@ To edit a monitor configuration, click the according pen icon.
 > * From that screen, you will see how many remaining monitors are available from your Uptime Robot account.
 > * The monitors informations are refreshed every 5 minutes.
 
+
+### Detail view of a monitor
+
+For each monitor, you can get more detailed informations and the list of related events.
+
+![View monitors screen](resources/img/uptime-robot-view-monitor.png)
+
+
 ### Edit a monitor
 
 The edition screen allows you to change the entry and the alert contacts users.
@@ -97,6 +116,7 @@ You can also remove the monitor by using the "Delete" action from the upper righ
 ![Edit monitor screen](resources/img/uptime-robot-edit-monitor.png)
 > **Warning:**
 > Be aware that if you remove a monitor, you will lose every monitoring logs from the Uptime Robot service accordingly.
+
 
 ### Uptime Robot users permissions
 
@@ -113,9 +133,11 @@ If the Craft environement support multiple sites, you will be able to set the pe
 > **Note:**
 > User will only be able to add monitors for the sites he owns the permission. 
 
+
 ### Uptime Robot Widget
 
 You can use the Uptime Robot widget to list monitors with there status and uptime informations. Simply add the widget from the dashboard screen by clicking the "New widget" button and select the "Uptime Robot" widget.
+
 
 ## Uptime Robot Roadmap
 
