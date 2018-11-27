@@ -119,8 +119,10 @@ class UptimeRobot extends Plugin
                     );
                     $event->rules['uptime-robot/add-monitor/<handle>'] = ['route' => $this->handle . '/cp/add-monitor'];
                     $event->rules['uptime-robot/add-monitor'] = ['route' => $this->handle . '/cp/add-monitor'];
+                    $event->rules['uptime-robot/view-monitor/<id:\d+>'] = ['route' => $this->handle . '/cp/view-monitor'];
                     $event->rules['uptime-robot/edit-monitor/<id:\d+>'] = ['route' => $this->handle . '/cp/edit-monitor'];
                     $event->rules['uptime-robot/remove-monitor/<id:\d+>'] = ['route' => $this->handle . '/cp/remove-monitor'];
+                    $event->rules['uptime-robot/confirm-monitor-removal/<id:\d+>'] = ['route' => $this->handle . '/cp/confirm-monitor-removal'];
                     $event->rules['uptime-robot'] = ['route' => $this->handle . '/cp'];
                 }
             );

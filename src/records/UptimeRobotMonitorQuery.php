@@ -38,7 +38,7 @@ class UptimeRobotMonitorQuery extends ActiveQuery
         $this->select = null;
         $record = parent::one($db);
         if ($record !== null) {
-            $monitors = UptimeRobot::$plugin->service->getMonitors(['alert_contacts' => true, 'all_time_uptime_ratio' => true, 'monitors' => $record->uptimeRobotMonitorId]);
+            $monitors = UptimeRobot::$plugin->service->getMonitors(['alert_contacts' => true, 'logs' => true, 'all_time_uptime_ratio' => true, 'monitors' => $record->uptimeRobotMonitorId]);
             $this->_loadMonitorData($monitors, $record);
             $this->_findAlertContacts($record);
         }

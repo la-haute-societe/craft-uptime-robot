@@ -156,8 +156,8 @@ class UptimeRobotHelper
     public static function getMonitorLogTypeLabels(): array
     {
         return [
-            Monitor::LOG_TYPE_DOWN    => Craft::t('uptime-robot', 'DOWN'),
-            Monitor::LOG_TYPE_UP      => Craft::t('uptime-robot', 'UP'),
+            Monitor::LOG_TYPE_DOWN    => Craft::t('uptime-robot', 'Down'),
+            Monitor::LOG_TYPE_UP      => Craft::t('uptime-robot', 'Up'),
             Monitor::LOG_TYPE_PAUSED  => Craft::t('uptime-robot', 'Paused'),
             Monitor::LOG_TYPE_STARTED => Craft::t('uptime-robot', 'Started'),
         ];
@@ -171,10 +171,10 @@ class UptimeRobotHelper
     public static function getMonitorLogTypeLabelClass($logtype): string
     {
         $labelClass = [
-            Monitor::LOG_TYPE_STARTED => 'label-info',
-            Monitor::LOG_TYPE_UP      => 'label-success',
-            Monitor::LOG_TYPE_PAUSED  => 'label-warning',
-            Monitor::LOG_TYPE_DOWN    => 'label-danger',
+            Monitor::LOG_TYPE_STARTED => 'status orange',
+            Monitor::LOG_TYPE_UP      => 'status green',
+            Monitor::LOG_TYPE_PAUSED  => 'status grey',
+            Monitor::LOG_TYPE_DOWN    => 'status red',
         ];
         return ArrayHelper::getValue($labelClass, $logtype);
     }
@@ -263,4 +263,34 @@ class UptimeRobotHelper
         return ArrayHelper::getValue($labelClass, $statusvalue);
     }
 
+    /**
+     * Return the given seconds length as formatted duration
+     * @param $duration
+     * @return string
+     */
+    public static function getFriendlyDuration(int $duration): string
+    {
+        return Craft::$app->formatter->asDuration($duration);
+    }
+
+
+    /**
+     * Format the ratio value to be diplayed as percent string
+     * @param string $ratio
+     * @return string
+     */
+    public static function getRatioAsPercent($ratio): string
+    {
+        return Craft::$app->formatter->asPercent((float)$ratio / 100, 2);
+    }
+
+    /**
+     * Format a giver interval in seconds into a friendly output per minutes
+     * @param $interval
+     * @return string
+     */
+    public static function getFriendlyInterval($interval): string
+    {
+        return Craft::t('uptime-robot', 'Every {interval,plural,=1{# minute} other{# minutes}}', ['interval' => round($interval / 60)]);
+    }
 }

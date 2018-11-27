@@ -1,0 +1,119 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * UptimeRobot plugin for Craft CMS 3.x
+ *
+ * UptimeRobot index.twig
+ *
+ * @author    La Haute Société
+ * @copyright Copyright (c) 2018 La Haute Société
+ * @link      https://www.lahautesociete.com
+ * @package   UptimeRobot
+ * @since     1.0.0
+ */
+#}
+
+{% extends "uptime-robot/_layouts/main.twig" %}
+
+{% set crumbs = [
+    {
+        label: "Uptime Robot",
+        url: cpUrl('uptime-robot')
+    },
+    {
+        label: "View monitor \"{name}\""|t('uptime-robot', {name: model.name}),
+        url: cpUrl("uptime-robot/edit-monitor/" ~ model.id)
+    }
+] %}
+
+{# The content of the CP Section#}
+{% set content %}
+    <h2>{{ 'Details'|t('uptime-robot') }}</h2>
+    <div class="tableview">
+        <table class="data fullwidth collapsible">
+            <tr>
+                <th>
+                    {{ 'Name'|t('uptime-robot') }}
+                </th>
+                <td>
+                    {{ model.monitor.friendly_name }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    {{ 'URL'|t('uptime-robot') }}
+                </th>
+                <td>
+                    {{ model.monitor.url }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    {{ 'Status'|t('uptime-robot') }}
+                </th>
+                <td>
+                    <span class="{{ craft.uptimeRobot.helper('getMonitorStatusLabelClass', model.monitor.status) }}"></span>{{ craft.uptimeRobot.helper('getMonitorStatusLabel', model.monitor.status) }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    {{ 'Uptime'|t('uptime-robot') }}
+                </th>
+                <td>
+                    {{ craft.uptimeRobot.helper('getRatioAsPercent', model.monitor.all_time_uptime_ratio) }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    {{ 'Type'|t('uptime-robot') }}
+                </th>
+                <td>
+                    {{ craft.uptimeRobot.helper('getMonitorTypeLabel', model.monitor.type) }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    {{ 'Interval'|t('uptime-robot') }}
+                </th>
+                <td>
+                    {{ craft.uptimeRobot.helper('getFriendlyInterval', model.monitor.interval) }}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <h2>{{ 'Events'|t('uptime-robot') }}</h2>
+    <div class="tableview">
+        <table class="data fullwidth collapsible">
+
+            <thead>
+
+            <th scope="col">{{ 'Status'|t('uptime-robot') }}</th>
+            <th scope="col">{{ 'Date'|t('uptime-robot') }}</th>
+            <th scope="col">{{ 'Duration'|t('uptime-robot') }}</th>
+            <th scope="col">{{ 'Reason'|t('uptime-robot') }}</th>
+
+            </thead>
+
+            <tbody>
+
+            {% for log in model.monitor.logs %}
+
+                <tr>
+
+                    <th><span class="{{ craft.uptimeRobot.helper('getMonitorLogTypeLabelClass', log.type) }}"></span>{{ craft.uptimeRobot.helper('getMonitorLogTypeLabel', log.type) }}</th>
+                    <td>{{ log.datetime|datetime }}</td>
+                    <td>{{ craft.uptimeRobot.helper('getFriendlyDuration', log.duration) }}</td>
+                    <td>{{ log.reason.detail }}</td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+    </div>
+{% endset %}
+

@@ -121,7 +121,9 @@ class UptimeRobotMonitor extends ActiveRecord
 
     public function afterDelete()
     {
-        $this->_monitor->delete();
+        if($this->_monitor !== null) {
+            $this->_monitor->delete();
+        }
         parent::afterDelete();
     }
 

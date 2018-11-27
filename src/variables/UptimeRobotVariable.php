@@ -57,6 +57,6 @@ class UptimeRobotVariable
 
     public function helper($method, $params = null)
     {
-        return $params === null ? UptimeRobotHelper::$method($params) : UptimeRobotHelper::$method();
+        return $params === null ? UptimeRobotHelper::$method() : UptimeRobotHelper::$method($params);
     }
 }

@@ -65,9 +65,7 @@ class CpController extends Controller
     // =========================================================================
 
     /**
-     * Handle a request going to our plugin's index action URL
-     *
-     * @return mixed
+     * @return \yii\web\Response
      * @throws \lhs\uptimerobot\exceptions\ApiException
      * @throws \yii\httpclient\Exception
      * @throws \yii\web\ForbiddenHttpException
@@ -94,7 +92,13 @@ class CpController extends Controller
         return $this->renderTemplate('uptime-robot/cp/index', $variables);
     }
 
-
+    /**
+     * @param string|null $handle
+     * @return \yii\web\Response
+     * @throws \craft\errors\MissingComponentException
+     * @throws \craft\errors\SiteNotFoundException
+     * @throws \yii\web\ForbiddenHttpException
+     */
     public function actionAddMonitor(string $handle = null)
     {
         $this->requirePermission('uptime-robot:add-monitors');
@@ -113,6 +117,43 @@ class CpController extends Controller
         return $this->renderTemplate('uptime-robot/cp/add-monitor', ['model' => $model]);
     }
 
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \craft\errors\MissingComponentException
+     * @throws \yii\web\ForbiddenHttpException
+     */
+    public function actionViewMonitor($id)
+    {
+        $this->requirePermission('uptime-robot:view-monitor');
+        $model = UptimeRobotMonitor::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException('The requested monitor does not exist.');
+        }
+        if (Craft::$app->getIsMultiSite() === true) {
+            $this->requirePermission('uptime-robot:view-monitor:' . $model->siteId);
+        }
+        Craft::$app->sites->setCurrentSite($model->siteId);
+        // Check if the monitor still exists
+        if ($model->getMonitor() === null) {
+            Craft::$app->getSession()->setError(Craft::t(
+                'uptime-robot',
+                'The related Uptime Robot monitor seems to not exists anymore.'
+            ));
+            return $this->redirect(UrlHelper::cpUrl('uptime-robot'));
+        }
+        $variables = ['model' => $model];
+        return $this->renderTemplate('uptime-robot/cp/view-monitor', $variables);
+    }
+
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \craft\errors\MissingComponentException
+     * @throws \yii\web\ForbiddenHttpException
+     */
     public function actionEditMonitor($id)
     {
         $this->requirePermission('uptime-robot:edit-monitor');
@@ -124,8 +165,16 @@ class CpController extends Controller
             $this->requirePermission('uptime-robot:edit-monitor:' . $model->siteId);
         }
         Craft::$app->sites->setCurrentSite($model->siteId);
+        // Check if the monitor still exists
+        if ($model->getMonitor() === null) {
+            Craft::$app->getSession()->setError(Craft::t(
+                'uptime-robot',
+                'The related Uptime Robot monitor seems to not exists anymore.'
+            ));
+            return $this->redirect(UrlHelper::cpUrl('uptime-robot/remove-monitor/' . $id));
+        }
         // Check if we can handle that type of monitor
-        if($model->getMonitor()->type !== Monitor::TYPE_HTTP) {
+        if ($model->getMonitor()->type !== Monitor::TYPE_HTTP) {
             Craft::$app->getSession()->setError(Craft::t(
                 'uptime-robot',
                 'That type of monitor cannot be modified by the Uptime Robot plugin .'
@@ -150,11 +199,18 @@ class CpController extends Controller
         return $this->renderTemplate('uptime-robot/cp/edit-monitor', $variables);
     }
 
-    public function actionRemoveMonitor()
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \craft\errors\MissingComponentException
+     * @throws \yii\db\StaleObjectException
+     * @throws \yii\web\ForbiddenHttpException
+     */
+    public function actionRemoveMonitor($id)
     {
         $this->requirePermission('uptime-robot:remove-monitor');
-        $this->requirePostRequest();
-        $id = Craft::$app->getRequest()->getRequiredBodyParam('id');
         $model = UptimeRobotMonitor::findOne($id);
         if (!$model) {
             throw new NotFoundHttpException('The requested monitor does not exist.');
@@ -163,17 +219,23 @@ class CpController extends Controller
             $this->requirePermission('uptime-robot:remove-monitor:' . $model->siteId);
         }
         Craft::$app->sites->setCurrentSite($model->siteId);
-        if ($model->delete()) {
-            Craft::$app->getSession()->setNotice(Craft::t(
-                'uptime-robot',
-                'Monitor has been successfully deleted.'
-            ));
-        } else {
-            Craft::$app->getSession()->setError(Craft::t(
-                'uptime-robot',
-                'An error occured while deleting the monitor.'
-            ));
+        if (Craft::$app->getRequest()->getIsPost()) {
+            if ($model->delete()) {
+                Craft::$app->getSession()->setNotice(Craft::t(
+                    'uptime-robot',
+                    'Monitor has been successfully deleted.'
+                ));
+            } else {
+                Craft::$app->getSession()->setError(Craft::t(
+                    'uptime-robot',
+                    'An error occurred while deleting the monitor.'
+                ));
+            }
+            return $this->redirect(UrlHelper::cpUrl('uptime-robot'));
         }
-        return $this->redirect(UrlHelper::cpUrl('uptime-robot'));
+
+        $variables = ['model' => $model];
+        return $this->renderTemplate('uptime-robot/cp/confirm-monitor-removal', $variables);
+
     }
 }
