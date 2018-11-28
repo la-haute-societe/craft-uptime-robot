@@ -14,40 +14,30 @@
 #}
 
 {% if monitors|length %}
-    <div class="tableview">
-        <table class="data fullwidth collapsible">
 
-            <thead>
+    <table class="data fullwidth">
+        {% for monitor in monitors %}
+            <tr>
+                <td>
+                    {% if currentUser.can('uptime-robot:view-monitor:' ~ monitor.siteId) %}
+                        <a href="{{ url('uptime-robot/view-monitor/' ~ monitor.id) }}" class="go"><span class="{{ monitor.statusClass }}"></span>{{ monitor.name }}</a>
+                    {% else %}
+                    <span class="{{ monitor.statusClass }}"></span>{{ monitor.name }}
+                    {% endif %}
+                </td>
+                <td class="light">
+                    {{ monitor.uptime }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 
-            <th scope="col">{{ 'Name'|t('uptime-robot') }}</th>
-            <th scope="col">{{ 'Status'|t('uptime-robot') }}</th>
-            <th scope="col">{{ 'Uptime'|t('uptime-robot') }}</th>
-
-            </thead>
-
-            <tbody>
-
-            {% for monitor in monitors %}
-
-                <tr>
-
-                    <th style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ monitor.name }}</th>
-                    <td style="white-space: nowrap"><span class="{{ monitor.statusClass }}"></span>{{ monitor.status }}</td>
-                    <td>{{ monitor.uptime }}</td>
-
-                </tr>
-
-            {% endfor %}
-
-            </tbody>
-
-        </table>
-    </div>
 {% else %}
 
     <h3>{{ 'No monitors found'|t('uptime-robot') }}</h3>
-
-    <p>{{ 'Click the \'Add new monitor\' button to create one.'|t('uptime-robot') }}</p>
+    {% if currentUser.can('uptime-robot:add-monitor') %}
+        <a href="{{ cpUrl('uptime-robot/add-monitor') }}" class="btn small submit add icon">{{ 'Add monitor'|t('uptime-robot') }}</a>
+    {% endif %}
 
 {% endif %}
 
