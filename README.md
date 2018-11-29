@@ -35,7 +35,7 @@ You can add a monitor for any entry and site you wish.
 
 You can also select which user will receive email alerts if the site goes down.
 
-Without even leaving your Craft site, you can access your monitors uptime informations and detailed logs of events.
+Without even leaving your Craft site, access your monitors uptime informations and detailed logs of events.
 
 
 ## Configuring Uptime Robot
