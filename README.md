@@ -35,6 +35,8 @@ You can add a monitor for any entry and site you wish.
 
 You can also select which user will receive email alerts if the site goes down.
 
+Without even leaving your Craft site, you can access your monitors uptime informations and detailed logs of events.
+
 
 ## Configuring Uptime Robot
 
@@ -51,11 +53,11 @@ Once logged into your Uptime Robot account, you will be able to get your API key
 
 In the lower right section of the page, you can click the "Show/hide it" link to reveal the API key, generate and copy it.
 
-![Logo](resources/img/uptime-robot-api-key.png)
+![Get an Uptime Robot API key](resources/img/uptime-robot-api-key.png)
 
 Copy the API key within the Uptime Robot plugin settings and validate to check that it is able to talk to the Uptime Robot services.
 
-![Logo](resources/img/uptime-robot-settings.png)
+![Settings screen](resources/img/uptime-robot-settings.png)
 > **Note:**
 > Once you will start adding monitors, it's not recommended to update the API key with a different account, otherwise your existing monitors informations will become unavailable from the Craft admin panel.
 
@@ -104,7 +106,7 @@ To edit a monitor configuration, click the according pen icon.
 
 For each monitor, you can get more detailed informations and the list of related events.
 
-![View monitors screen](resources/img/uptime-robot-view-monitor.png)
+![Detail monitor view screen](resources/img/uptime-robot-view-monitor.png)
 
 
 ### Edit a monitor
@@ -129,7 +131,7 @@ From the users permissions panel, you will be able to set the following permissi
 
 If the Craft environement support multiple sites, you will be able to set the permissions per site.
 
-![Logo](resources/img/uptime-robot-user-permissions.png)
+![User permission screen](resources/img/uptime-robot-user-permissions.png)
 > **Note:**
 > User will only be able to add monitors for the sites he owns the permission. 
 
