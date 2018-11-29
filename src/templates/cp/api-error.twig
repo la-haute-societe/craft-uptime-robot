@@ -1,0 +1,23 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * UptimeRobot plugin for Craft CMS 3.x
+ *
+ * UptimeRobot index.twig
+ *
+ * @author    La Haute Société
+ * @copyright Copyright (c) 2018 La Haute Société
+ * @link      https://www.lahautesociete.com
+ * @package   UptimeRobot
+ * @since     1.0.0
+ */
+#}
+
+{% extends "uptime-robot/_layouts/main.twig" %}
+
+{# The content of the CP Section#}
+{% set content %}
+    <div class="error">
+        <span data-icon="alert"></span> {{ 'An error occured while trying to connect to Uptime Robot API: {message}'|t('uptime-robot', { message: message }) }}
+    </div>
+{% endset %}

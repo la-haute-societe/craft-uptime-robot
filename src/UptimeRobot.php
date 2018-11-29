@@ -178,6 +178,7 @@ class UptimeRobot extends Plugin
                 }
             );
 
+            // TODO: Use an Element type for UptimeRobotMonitor records
             // TODO: Add interval setting support
             // TODO: Add Keyword monitor type support
             // TODO: Add HTTP Authentication support

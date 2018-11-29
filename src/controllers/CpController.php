@@ -17,7 +17,6 @@ use lhs\uptimerobot\models\Monitor;
 use lhs\uptimerobot\records\UptimeRobotMonitor;
 use lhs\uptimerobot\UptimeRobot;
 use yii\helpers\ArrayHelper;
-use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -83,7 +82,11 @@ class CpController extends Controller
             }
             $monitorsQuery->where(['siteId' => $allowedSitesIds]);
         }
-        $variables['monitors'] = $monitorsQuery->all();
+        try {
+            $variables['monitors'] = $monitorsQuery->all();
+        } catch (\yii\httpclient\Exception $e) {
+            return $this->_handleApiError($e);
+        }
         $accountInfo = UptimeRobot::$plugin->service->getAccountDetails();
         $monitors = UptimeRobot::$plugin->service->getMonitors();
         $variables['monitorsLeft'] = ArrayHelper::getValue($accountInfo, 'account.monitor_limit', 0) - count($monitors);
@@ -113,7 +116,6 @@ class CpController extends Controller
             ));
             return $this->redirect(UrlHelper::cpUrl('uptime-robot'));
         }
-        Craft::debug('Errors: ' . VarDumper::dumpAsString($model->getErrorSummary(true)), __METHOD__);
         return $this->renderTemplate('uptime-robot/cp/add-monitor', ['model' => $model]);
     }
 
@@ -127,7 +129,11 @@ class CpController extends Controller
     public function actionViewMonitor($id)
     {
         $this->requirePermission('uptime-robot:view-monitor');
-        $model = UptimeRobotMonitor::findOne($id);
+        try {
+            $model = UptimeRobotMonitor::findOne($id);
+        } catch (\yii\httpclient\Exception $e) {
+            return $this->_handleApiError($e);
+        }
         if (!$model) {
             throw new NotFoundHttpException('The requested monitor does not exist.');
         }
@@ -157,7 +163,11 @@ class CpController extends Controller
     public function actionEditMonitor($id)
     {
         $this->requirePermission('uptime-robot:edit-monitor');
-        $model = UptimeRobotMonitor::findOne($id);
+        try {
+            $model = UptimeRobotMonitor::findOne($id);
+        } catch (\yii\httpclient\Exception $e) {
+            return $this->_handleApiError($e);
+        }
         if (!$model) {
             throw new NotFoundHttpException('The requested monitor does not exist.');
         }
@@ -181,6 +191,7 @@ class CpController extends Controller
             ));
             return $this->redirect(UrlHelper::cpUrl('uptime-robot'));
         }
+
         if ($model->load(Craft::$app->getRequest()->post()) && $model->save()) {
             Craft::$app->getSession()->setNotice(Craft::t(
                 'uptime-robot',
@@ -211,7 +222,11 @@ class CpController extends Controller
     public function actionRemoveMonitor($id)
     {
         $this->requirePermission('uptime-robot:remove-monitor');
-        $model = UptimeRobotMonitor::findOne($id);
+        try {
+            $model = UptimeRobotMonitor::findOne($id);
+        } catch (\yii\httpclient\Exception $e) {
+            return $this->_handleApiError($e);
+        }
         if (!$model) {
             throw new NotFoundHttpException('The requested monitor does not exist.');
         }
@@ -237,5 +252,17 @@ class CpController extends Controller
         $variables = ['model' => $model];
         return $this->renderTemplate('uptime-robot/cp/confirm-monitor-removal', $variables);
 
+    }
+
+    /**
+     * Log the given exception and redirect to the API error template
+     *
+     * @param \Exception $e
+     * @return \yii\web\Response
+     */
+    private function _handleApiError(\Exception $e): \yii\web\Response
+    {
+        Craft::error('An error occured while trying to connect to Uptime Robot API: ' . $e->getMessage(), __METHOD__);
+        return $this->renderTemplate('uptime-robot/cp/api-error', ['message' => $e->getMessage()]);
     }
 }

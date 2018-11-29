@@ -13,6 +13,6 @@
  */
 #}
 
-<div class="pane error"><span data-icon="alert"> {{ message }}</span></div>
+<div class="error"><span data-icon="alert"> {{ 'An error occured while trying to connect to Uptime Robot API: {message}'|t('uptime-robot', { message: message }) }}</span></div>
 
 

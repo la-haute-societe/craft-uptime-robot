@@ -139,6 +139,11 @@ If the Craft environement support multiple sites, you will be able to set the pe
 You can use the Uptime Robot widget to list monitors with there status and uptime informations. Simply add the widget from the dashboard screen by clicking the "New widget" button and select the "Uptime Robot" widget.
 
 
+## Licensing
+
+This plugin is free to try in development environments, but requires payment to be used in production environments. The license fee for this plugin is $29 (license + one year of updates) via the Craft Plugin Store, then $5 per year for updates (optional).
+
+
 ## Uptime Robot Roadmap
 
 * Be able to set various parameters like interval and HTTP Authentication per monitor
@@ -146,6 +151,7 @@ You can use the Uptime Robot widget to list monitors with there status and uptim
 * Be able to pause/restart a monitor
 * Detail view with reponse time
 * More useful widget
+* More user friendly interface (Custom element type to handle monitors management)
 
 Brought to you by [![LHS Logo](resources/img/lhs.png) La Haute Société][lhs-site].
 

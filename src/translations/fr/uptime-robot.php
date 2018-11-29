@@ -62,10 +62,11 @@ return [
     'Events'                                                                                                          => 'Evénements',
     'Paused'                                                                                                          => 'En pause',
     'Started'                                                                                                         => 'Démarré',
-    'Duration'                                                                                                        => 'Durée',
-    'Reason'                                                                                                          => 'Raison',
-    'Details'                                                                                                         => 'Informations',
-    'Every {interval,plural,=1{# minute} other{# minutes}}'                                                           => 'Toutes {interval,plural,=1{les minutes} other{les # minutes}}',
-    'View monitor "{name}"'                                                                                           => 'Visualisation de la sonde "{name}"'
+    'Duration'                                                                => 'Durée',
+    'Reason'                                                                  => 'Raison',
+    'Details'                                                                 => 'Informations',
+    'Every {interval,plural,=1{# minute} other{# minutes}}'                   => 'Toutes {interval,plural,=1{les minutes} other{les # minutes}}',
+    'View monitor "{name}"'                                                   => 'Visualisation de la sonde "{name}"',
+    'An error occured while trying to connect to Uptime Robot API: {message}' => 'Une erreur est survenue pendant une tentative de connexion à l\'API d\'Uptime Robot : {message}'
 ];
 
