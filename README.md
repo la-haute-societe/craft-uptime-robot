@@ -31,7 +31,7 @@ Uptime Robot is a website monitoring service which offers up to 50 free monitors
 
 This plugin can help you to supervise the availabilty of your Craft site by adding related Uptime Robot monitors.
 
-You can a monitor for any entry and site you wish.
+You can add a monitor for any entry and site you wish.
 
 You can also select which user will receive email alerts if the site goes down.
 
@@ -53,7 +53,7 @@ In the lower right section of the page, you can click the "Show/hide it" link to
 
 ![Logo](resources/img/uptime-robot-api-key.png)
 
-Copy the API key within the Uptime Robot settings and validate to check that the plugin is able to talk to the Uptime Robot services.
+Copy the API key within the Uptime Robot plugin settings and validate to check that it is able to talk to the Uptime Robot services.
 
 ![Logo](resources/img/uptime-robot-settings.png)
 > **Note:**
