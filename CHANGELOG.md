@@ -1,8 +1,4 @@
-# UptimeRobot Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
+# Uptime Robot plugin for Craft CMS 3.x Changelog
 
 ## 1.0.0 - 2018-10-24
 ### Added
