@@ -155,6 +155,8 @@ This plugin is free to try in development environments, but requires payment to 
 
 Brought to you by [![LHS Logo](resources/img/lhs.png) La Haute Société][lhs-site].
 
+Uptime Robot is a trademark of Uptime Robot Service Provider Ltd.
+
 [uptime-robot-site]: https://uptimerobot.com
 [lhs-site]: https://www.lahautesociete.com
 [craft-plugin-store]: https://plugins.craftcms.com
