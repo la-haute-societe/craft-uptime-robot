@@ -79,6 +79,7 @@ class Monitor extends Model
     public $ignore_ssl_errors;
     public $status;
     public $all_time_uptime_ratio;
+    public $average_response_time;
     public $response_times = [];
     public $logs = [];
     public $create_datetime;

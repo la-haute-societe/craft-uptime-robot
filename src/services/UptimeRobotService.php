@@ -38,7 +38,7 @@ use yii\httpclient\Client;
 class UptimeRobotService extends Component
 {
     public $apiKey;
-    protected $baseApiUrl = "https://api.uptimerobot.com/v2";
+    protected $baseApiUrl = 'https://api.uptimerobot.com/v2';
     public $cache = 'cache';
     public $cacheDuration = 300; // 5 minutes cache by default
     private $_client;
@@ -59,11 +59,11 @@ class UptimeRobotService extends Component
             'deleteAlertContact',
         ];
         if (in_array($name, $methods)) {
-            if (!strpos($name, "Monitor") === false) {
+            if (!strpos($name, 'Monitor') === false) {
                 $this->cache->delete([__CLASS__, 'getAccountDetails']);
                 TagDependency::invalidate($this->cache, __CLASS__ . '_monitors');
             }
-            if (!strpos($name, "AlertContact") === false) {
+            if (!strpos($name, 'AlertContact') === false) {
                 TagDependency::invalidate($this->cache, __CLASS__ . '_alertcontacts');
             }
             return $this->request($name, $params ? $params[0] : []);

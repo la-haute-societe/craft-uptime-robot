@@ -13,6 +13,7 @@ namespace lhs\uptimerobot\controllers;
 use Craft;
 use craft\helpers\UrlHelper;
 use craft\web\Controller;
+use Exception;
 use lhs\uptimerobot\models\Monitor;
 use lhs\uptimerobot\records\UptimeRobotMonitor;
 use lhs\uptimerobot\UptimeRobot;
@@ -84,11 +85,11 @@ class CpController extends Controller
         }
         try {
             $variables['monitors'] = $monitorsQuery->all();
-        } catch (\yii\httpclient\Exception $e) {
+            $accountInfo = UptimeRobot::$plugin->service->getAccountDetails();
+            $monitors = UptimeRobot::$plugin->service->getMonitors();
+        } catch (Exception $e) {
             return $this->_handleApiError($e);
         }
-        $accountInfo = UptimeRobot::$plugin->service->getAccountDetails();
-        $monitors = UptimeRobot::$plugin->service->getMonitors();
         $variables['monitorsLeft'] = ArrayHelper::getValue($accountInfo, 'account.monitor_limit', 0) - count($monitors);
         $variables['showAddMonitor'] = $variables['monitorsLeft'] > 0;
 
@@ -131,7 +132,7 @@ class CpController extends Controller
         $this->requirePermission('uptime-robot:view-monitor');
         try {
             $model = UptimeRobotMonitor::findOne($id);
-        } catch (\yii\httpclient\Exception $e) {
+        } catch (Exception $e) {
             return $this->_handleApiError($e);
         }
         if (!$model) {
@@ -149,7 +150,12 @@ class CpController extends Controller
             ));
             return $this->redirect(UrlHelper::cpUrl('uptime-robot'));
         }
-        $variables = ['model' => $model];
+        $variables = [
+            'model'                 => $model,
+            'response_times_series' => array_map(function ($data) {
+                return [$data['datetime'] * 1000, $data['value']];
+            }, $model->getMonitor()->response_times)
+        ];
         return $this->renderTemplate('uptime-robot/cp/view-monitor', $variables);
     }
 
@@ -165,7 +171,7 @@ class CpController extends Controller
         $this->requirePermission('uptime-robot:edit-monitor');
         try {
             $model = UptimeRobotMonitor::findOne($id);
-        } catch (\yii\httpclient\Exception $e) {
+        } catch (Exception $e) {
             return $this->_handleApiError($e);
         }
         if (!$model) {
@@ -224,7 +230,7 @@ class CpController extends Controller
         $this->requirePermission('uptime-robot:remove-monitor');
         try {
             $model = UptimeRobotMonitor::findOne($id);
-        } catch (\yii\httpclient\Exception $e) {
+        } catch (Exception $e) {
             return $this->_handleApiError($e);
         }
         if (!$model) {
@@ -260,7 +266,7 @@ class CpController extends Controller
      * @param \Exception $e
      * @return \yii\web\Response
      */
-    private function _handleApiError(\Exception $e): \yii\web\Response
+    private function _handleApiError(Exception $e): \yii\web\Response
     {
         Craft::error('An error occured while trying to connect to Uptime Robot API: ' . $e->getMessage(), __METHOD__);
         return $this->renderTemplate('uptime-robot/cp/api-error', ['message' => $e->getMessage()]);

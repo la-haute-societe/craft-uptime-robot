@@ -58,15 +58,17 @@ return [
     'The related Uptime Robot monitor seems to not exists anymore.'                                                   => 'La sonde Uptime Robot associée ne semble plus exister.',
     'OK'                                                                                                              => 'OK',
     'Cancel'                                                                                                          => 'Annuler',
-    'Update monitor'                                                                                                  => 'Mettre à jour la sonde',
-    'Events'                                                                                                          => 'Evénements',
-    'Paused'                                                                                                          => 'En pause',
-    'Started'                                                                                                         => 'Démarré',
+    'Update monitor'                                                          => 'Mettre à jour la sonde',
+    'Events'                                                                  => 'Evénements',
+    'Paused'                                                                  => 'En pause',
+    'Started'                                                                 => 'Démarré',
     'Duration'                                                                => 'Durée',
     'Reason'                                                                  => 'Raison',
     'Details'                                                                 => 'Informations',
     'Every {interval,plural,=1{# minute} other{# minutes}}'                   => 'Toutes {interval,plural,=1{les minutes} other{les # minutes}}',
     'View monitor "{name}"'                                                   => 'Visualisation de la sonde "{name}"',
-    'An error occured while trying to connect to Uptime Robot API: {message}' => 'Une erreur est survenue pendant une tentative de connexion à l\'API d\'Uptime Robot : {message}'
+    'An error occured while trying to connect to Uptime Robot API: {message}' => 'Une erreur est survenue pendant une tentative de connexion à l\'API d\'Uptime Robot : {message}',
+    'Average response time'                                                   => 'Temps de réponse moyen',
+    '{response_time} milliseconds'                                            => '{response_time} millisecondes'
 ];
 

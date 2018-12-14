@@ -104,9 +104,16 @@ To edit a monitor configuration, click the according pen icon.
 
 ### Detail view of a monitor
 
-For each monitor, you can get more detailed informations and the list of related events.
+For each monitor, you can get more detailed informations, response times and the list of related events.
 
-![Detail monitor view screen](resources/img/uptime-robot-view-monitor.png)
+#### Details
+![Detail monitor view screen](resources/img/uptime-robot-view-monitors-details.png)
+
+#### Response times
+![Response time view screen](resources/img/uptime-robot-view-monitors-response-time.png)
+
+#### Events
+![Events view screen](resources/img/uptime-robot-view-monitors-events.png)
 
 
 ### Edit a monitor

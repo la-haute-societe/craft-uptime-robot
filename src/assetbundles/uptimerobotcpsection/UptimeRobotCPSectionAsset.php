@@ -42,6 +42,8 @@ class UptimeRobotCPSectionAsset extends AssetBundle
      */
     public function init()
     {
+        Craft::$app->getRequest()->pathInfo;
+
         // define the path that your publishable resources live
         $this->sourcePath = "@lhs/uptimerobot/assetbundles/uptimerobotcpsection/dist";
 
@@ -54,6 +56,7 @@ class UptimeRobotCPSectionAsset extends AssetBundle
         // when this asset bundle is registered
         $this->js = [
             'js/UptimeRobot.js',
+            'js/apexcharts.min.js',
         ];
 
         $this->css = [
