@@ -3,7 +3,7 @@
 
 # Uptime Robot plugin for Craft CMS 3.x
 
-Monitor your Craft CMS sites with [Uptime Robot][uptime-robot-site].
+Monitor your Craft CMS sites with [Uptime Robot][uptime-robot-site] from the control panel.
 
 
 ## Requirements
@@ -158,7 +158,6 @@ This plugin is free to try in development environments, but requires payment to 
 * Be able to set various parameters like interval and HTTP Authentication per monitor
 * Handle Keyword monitor type with dedicated Twig macro to inject the keyword in the entry page
 * Be able to pause/restart a monitor
-* Detail view with reponse time
 * More useful widget
 * More user friendly interface (Custom element type to handle monitors management)
 
