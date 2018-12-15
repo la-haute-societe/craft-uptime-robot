@@ -2,7 +2,7 @@
     "name": "la-haute-societe/craft-uptime-robot",
     "description": "Monitor your Craft CMS sites with Uptime Robot.",
     "type": "craft-plugin",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "keywords": [
         "craft",
         "cms",
