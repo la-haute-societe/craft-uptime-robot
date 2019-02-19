@@ -37,7 +37,7 @@ class UptimeRobotMonitor extends ActiveRecord
 
 
     private $_entry;
-    private $_contacts;
+    private $_contacts = [];
     private $_monitor;
 
     // Public Static Methods
@@ -88,14 +88,16 @@ class UptimeRobotMonitor extends ActiveRecord
     {
         $alertContacts = [];
         $users = $this->getAlertContacts();
-        foreach ($users as $user) {
-            $contact = new Contact([
-                'friendly_name' => $user->fullName ?? 'Craft user',
-                'value'         => $user->email,
-                'type'          => Contact::TYPE_EMAIL
-            ]);
-            if ($contact->save()) {
-                $alertContacts[] = $contact;
+        if (is_array($users)) {
+            foreach ($users as $user) {
+                $contact = new Contact([
+                    'friendly_name' => $user->fullName ?? 'Craft user',
+                    'value'         => $user->email,
+                    'type'          => Contact::TYPE_EMAIL
+                ]);
+                if ($contact->save()) {
+                    $alertContacts[] = $contact;
+                }
             }
         }
         $entry = $this->getEntry();
