@@ -55,7 +55,29 @@ class UptimeRobotMonitorQuery extends ActiveQuery
         $monitorData = ArrayHelper::getValue($monitors, ArrayHelper::getValue($record, 'uptimeRobotMonitorId'));
         $monitor = null;
         if ($monitorData !== null) {
-            $monitor = new Monitor($monitorData);
+            $monitor = new Monitor([
+                'id'                    => ArrayHelper::getValue($monitorData, 'id'),
+                'friendly_name'         => ArrayHelper::getValue($monitorData, 'friendly_name'),
+                'url'                   => ArrayHelper::getValue($monitorData, 'url'),
+                'type'                  => ArrayHelper::getValue($monitorData, 'type'),
+                'sub_type'              => ArrayHelper::getValue($monitorData, 'sub_type'),
+                'port'                  => ArrayHelper::getValue($monitorData, 'port'),
+                'keyword_type'          => ArrayHelper::getValue($monitorData, 'keyword_type'),
+                'keyword_value'         => ArrayHelper::getValue($monitorData, 'keyword_value'),
+                'http_username'         => ArrayHelper::getValue($monitorData, 'http_username'),
+                'http_password'         => ArrayHelper::getValue($monitorData, 'http_password'),
+                'interval'              => ArrayHelper::getValue($monitorData, 'interval'),
+                'mwindows'              => ArrayHelper::getValue($monitorData, 'mwindows'),
+                'custom_http_headers'   => ArrayHelper::getValue($monitorData, 'custom_http_headers'),
+                'ignore_ssl_errors'     => ArrayHelper::getValue($monitorData, 'ignore_ssl_errors'),
+                'status'                => ArrayHelper::getValue($monitorData, 'status'),
+                'all_time_uptime_ratio' => ArrayHelper::getValue($monitorData, 'all_time_uptime_ratio'),
+                'average_response_time' => ArrayHelper::getValue($monitorData, 'average_response_time'),
+                'response_times'        => ArrayHelper::getValue($monitorData, 'response_times'),
+                'logs'                  => ArrayHelper::getValue($monitorData, 'logs'),
+                'create_datetime'       => ArrayHelper::getValue($monitorData, 'create_datetime'),
+                'alert_contacts'        => ArrayHelper::getValue($monitorData, 'alert_contacts'),
+            ]);
         }
         if (is_array($record)) {
             $record['monitor'] = $monitor;
