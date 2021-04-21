@@ -31,6 +31,7 @@ use lhs\uptimerobot\services\UptimeRobotService as UptimeRobotService;
 use lhs\uptimerobot\variables\UptimeRobotVariable;
 use lhs\uptimerobot\widgets\UptimeRobotWidget;
 use yii\base\Event;
+use yii\debug\Module as DebugModule;
 use yii\httpclient\debug\HttpClientPanel;
 
 /**
@@ -217,18 +218,20 @@ class UptimeRobot extends Plugin
                 }
             );
 
-            if (YII_DEBUG) {
-                // Add the HttpClient Panel to the Yii debug bar
-                Event::on(
-                    Application::class,
-                    Application::EVENT_BEFORE_REQUEST,
-                    function () {
-                        /** @var \yii\debug\Module $debugModule */
-                        $debugModule = Craft::$app->getModule('debug');
-                        $debugModule->panels['httpclient'] = new HttpClientPanel(['module' => $debugModule]);
+            Event::on(
+                Application::class,
+                Application::EVENT_BEFORE_REQUEST,
+                function (){
+                    /** @var DebugModule|null $debugModule */
+                    $debugModule = Craft::$app->getModule('debug');
+                    if ($debugModule) {
+                        $debugModule->panels['httpclient'] = new HttpClientPanel([
+                            'id'     => 'httpclient',
+                            'module' => $debugModule,
+                        ]);
                     }
-                );
-            }
+                }
+            );
         }
 
         /**
